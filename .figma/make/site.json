@@ -1,0 +1,10 @@
+{
+  "description": "A mobile-responsive app with clickable controls, designed for a smooth, focused experience on phones.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
