@@ -167,7 +167,7 @@ function AppHeader({ onNotice }: { onNotice: () => void }) {
   )
 }
 
-const navItems: { id: Page; icon: string; label: string }[] = [
+const navItems: { id: Page icon: string label: string }[] = [
   { id: "home", icon: "home", label: "মূল অফিস" },
   { id: "work", icon: "work", label: "কর্মক্ষেত্র" },
   { id: "earn", icon: "chart", label: "অর্জনের পথ" },
