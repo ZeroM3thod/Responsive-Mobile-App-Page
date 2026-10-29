@@ -278,11 +278,11 @@ button:active {
   align-items: center;
   justify-content: center;
   gap: 7px;
-  border: 1px solid #d7edf5;
+  border: 0;
   border-radius: 12px;
   color: #072d65;
-  background: white;
-  box-shadow: 0 2px 8px rgba(6, 109, 157, .08);
+  background: transparent;
+  box-shadow: none;
 }
 
 .quick-grid button > span {
@@ -319,8 +319,8 @@ button:active {
   border: 0;
   border-radius: 11px;
   color: #082e66;
-  background: rgba(255,255,255,.94);
-  box-shadow: 0 1px 6px rgba(6, 109, 157, .05);
+  background: transparent;
+  box-shadow: none;
   font-size: 18px;
   font-weight: 600;
   text-align: left;
