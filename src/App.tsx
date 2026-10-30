@@ -121,6 +121,26 @@ function Icon({
         <path d="M7 3v10M7 8H5a2 2 0 0 0-2 2v3l4 7h8a4 4 0 0 0 4-4v-6a2 2 0 0 0-4 0V8a2 2 0 0 0-4 0V6a2 2 0 0 0-4 0" />
       </>
     ),
+    share: (
+      <>
+        <circle cx="18" cy="5" r="3" />
+        <circle cx="6" cy="12" r="3" />
+        <circle cx="18" cy="19" r="3" />
+        <path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4" />
+      </>
+    ),
+    copy: (
+      <>
+        <rect x="8" y="8" width="12" height="12" rx="2" />
+        <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+      </>
+    ),
+    link: (
+      <>
+        <path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.2" />
+        <path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.2-1.2" />
+      </>
+    ),
   }
 
   return (
@@ -408,6 +428,381 @@ function WorkPage({
   )
 }
 
+type TeamMember = {
+  id: string
+  date: string
+  deposit: number
+  profit: number
+  active: boolean
+}
+
+const teamRates = { 1: 5, 2: 2, 3: 1 } as const
+const teamData: Record<keyof typeof teamRates, {
+  title: string
+  members: number
+  active: number
+  teamDeposit: number
+  teamProfit: number
+  list: TeamMember[]
+}> = {
+  1: {
+    title: "লেভেল ১ ডিরেক্ট টিম",
+    members: 25,
+    active: 18,
+    teamDeposit: 52000,
+    teamProfit: 4800,
+    list: [
+      {
+        id: "০১৭৮***৯০১২",
+        date: "২৪ অক্টো, ২০২৬",
+        deposit: 5000,
+        profit: 250,
+        active: true,
+      },
+      {
+        id: "০১৮১***৪৫৬৭",
+        date: "২২ অক্টো, ২০২৬",
+        deposit: 2000,
+        profit: 100,
+        active: true,
+      },
+      {
+        id: "০১৯২***১১২২",
+        date: "২০ অক্টো, ২০২৬",
+        deposit: 0,
+        profit: 0,
+        active: false,
+      },
+      {
+        id: "০১৫৫***৩৩৪৪",
+        date: "১৮ অক্টো, ২০২৬",
+        deposit: 10000,
+        profit: 500,
+        active: true,
+      },
+    ],
+  },
+  2: {
+    title: "লেভেল ২ ইনডাইরেক্ট টিম",
+    members: 15,
+    active: 10,
+    teamDeposit: 34000,
+    teamProfit: 2900,
+    list: [
+      {
+        id: "০১৬৭***৮৮৯৯",
+        date: "২৫ অক্টো, ২০২৬",
+        deposit: 3000,
+        profit: 150,
+        active: true,
+      },
+      {
+        id: "০১৭৬***০০১১",
+        date: "২১ অক্টো, ২০২৬",
+        deposit: 10000,
+        profit: 500,
+        active: true,
+      },
+      {
+        id: "০১৩৩***৭৭৬৬",
+        date: "১৯ অক্টো, ২০২৬",
+        deposit: 0,
+        profit: 0,
+        active: false,
+      },
+    ],
+  },
+  3: {
+    title: "লেভেল ৩ ইনডাইরেক্ট টিম",
+    members: 8,
+    active: 4,
+    teamDeposit: 16000,
+    teamProfit: 1500,
+    list: [
+      {
+        id: "০১৯৯***৫৫৪৪",
+        date: "২৬ অক্টো, ২০২৬",
+        deposit: 5000,
+        profit: 250,
+        active: true,
+      },
+      {
+        id: "০১৭৪***২৩২৩",
+        date: "২৩ অক্টো, ২০২৬",
+        deposit: 6318.5,
+        profit: 300,
+        active: true,
+      },
+      {
+        id: "০১৮৮***৯৯০০",
+        date: "২০ অক্টো, ২০২৬",
+        deposit: 0,
+        profit: 0,
+        active: false,
+      },
+    ],
+  },
+}
+
+const bengaliNumber = (value: number) =>
+  value.toLocaleString("bn-BD", { maximumFractionDigits: 0 })
+
+const money = (value: number) =>
+  `৳ ${value.toLocaleString("bn-BD", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`
+
+const levelTotals = (level: keyof typeof teamRates) => {
+  const data = teamData[level]
+  const deposit = (data.teamDeposit * teamRates[level]) / 100
+  const profit = (data.teamProfit * teamRates[level]) / 100
+  return { deposit, profit, total: deposit + profit }
+}
+
+function TeamPage({ action }: { action: (message: string) => void }) {
+  const [level, setLevel] = useState<keyof typeof teamRates>(1)
+  const data = teamData[level]
+  const totals = levelTotals(level)
+  const summary = ([1, 2, 3] as const).reduce(
+    (result, item) => {
+      const itemTotals = levelTotals(item)
+      result.deposit += itemTotals.deposit
+      result.profit += itemTotals.profit
+      result.members += teamData[item].members
+      result.active += teamData[item].active
+      return result
+    },
+    { deposit: 0, profit: 0, members: 0, active: 0 },
+  )
+
+  const copyText = async (text: string, message: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+    } catch {
+      const input = document.createElement("input")
+      input.value = text
+      document.body.appendChild(input)
+      input.select()
+      document.execCommand("copy")
+      input.remove()
+    }
+    action(message)
+  }
+
+  return (
+    <main className="team-page page-content">
+      <section className="team-summary">
+        <div className="team-summary-mark">
+          <Icon name="users" size={74} strokeWidth={1.4} />
+        </div>
+        <div className="team-badges">
+          <span>রেফারেল প্রোগ্রাম</span>
+          <small>● ৩ টিয়ার সিস্টেম</small>
+        </div>
+        <h1>সাফল্যের সঙ্গী (টিম ইনকাম)</h1>
+        <p>
+          বন্ধুদের আমন্ত্রণ জানান এবং ৩টি স্তর থেকে ডিপোজিট বোনাস ও দৈনিক প্রফিট কমিশন
+          অর্জন করুন।
+        </p>
+        <div className="team-summary-grid main">
+          <div>
+            <small>মোট রেফার ইনকাম</small>
+            <strong className="amber">
+              {money(summary.deposit + summary.profit)}
+            </strong>
+          </div>
+          <div>
+            <small>মোট সদস্য</small>
+            <strong>{bengaliNumber(summary.members)} জন</strong>
+          </div>
+          <div>
+            <small>সক্রিয় সদস্য</small>
+            <strong className="green">
+              {bengaliNumber(summary.active)} জন
+            </strong>
+          </div>
+        </div>
+        <div className="team-summary-grid secondary">
+          <div>
+            <small>ডিপোজিট বোনাস</small>
+            <strong>{money(summary.deposit)}</strong>
+          </div>
+          <div>
+            <small>প্রফিট কমিশন</small>
+            <strong>{money(summary.profit)}</strong>
+          </div>
+        </div>
+      </section>
+
+      <section className="invite-card team-card">
+        <div className="team-card-heading">
+          <span>
+            <Icon name="share" size={20} />
+          </span>
+          <div>
+            <h2>আপনার আমন্ত্রণ লিংক</h2>
+            <p>শেয়ার করে নতুন মেম্বার যুক্ত করুন</p>
+          </div>
+        </div>
+        <label>আমন্ত্রণ কোড (Invitation Code):</label>
+        <div className="copy-field">
+          <strong>BOROJAJ8996</strong>
+          <button
+            onClick={() => copyText("BOROJAJ8996", "আমন্ত্রণ কোড কপি করা হয়েছে!")}
+          >
+            <Icon name="copy" size={15} /> কপি
+          </button>
+        </div>
+        <label>আমন্ত্রণ লিংক (Invitation Link):</label>
+        <div className="copy-field link-field">
+          <span>https://borojaj.app/ref/BOROJAJ8996</span>
+          <button
+            onClick={() =>
+              copyText(
+                "https://borojaj.app/ref/BOROJAJ8996",
+                "আমন্ত্রণ লিংক কপি করা হয়েছে!",
+              )
+            }
+          >
+            <Icon name="link" size={15} /> কপি লিংক
+          </button>
+        </div>
+      </section>
+
+      <section className="team-levels">
+        <h2>
+          <i /> টিম সদস্য ও কমিশন লেভেল
+        </h2>
+        <div className="level-tabs">
+          {([1, 2, 3] as const).map((item) => (
+            <button
+              className={level === item ? "active" : ""}
+              key={item}
+              onClick={() => setLevel(item)}
+            >
+              লেভেল {bengaliNumber(item)}
+              <span>({bengaliNumber(teamRates[item])}%)</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="level-stats team-card">
+          <div className="level-stats-head">
+            <div>
+              <small>
+                {data.title} ({bengaliNumber(teamRates[level])}% কমিশন)
+              </small>
+              <strong>
+                সদস্য: {bengaliNumber(data.members)} জন{" "}
+                <em>({bengaliNumber(data.active)} জন সক্রিয়)</em>
+              </strong>
+            </div>
+            <div>
+              <small>এই লেভেলের আয়</small>
+              <strong>{money(totals.total)}</strong>
+            </div>
+          </div>
+          <div className="level-income">
+            <div>
+              <small>
+                <Icon name="wallet" size={13} /> ডিপোজিট বোনাস
+              </small>
+              <strong>{money(totals.deposit)}</strong>
+            </div>
+            <div>
+              <small>
+                <Icon name="chart" size={13} /> প্রফিট কমিশন
+              </small>
+              <strong>{money(totals.profit)}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div className="member-list">
+          {data.list.map((member) => {
+            const bonus = (member.deposit * teamRates[level]) / 100
+            const commission = (member.profit * teamRates[level]) / 100
+            return (
+              <article className="member-card team-card" key={member.id}>
+                <div className="member-head">
+                  <span
+                    className={
+                      member.active ? "member-icon active" : "member-icon"
+                    }
+                  >
+                    <Icon name="user" size={21} />
+                  </span>
+                  <div className="member-identity">
+                    <div>
+                      <strong>{member.id}</strong>
+                      <small
+                        className={member.active ? "status active" : "status"}
+                      >
+                        {member.active ? "সক্রিয়" : "নিষ্ক্রিয়"}
+                      </small>
+                    </div>
+                    <p>যোগদান: {member.date}</p>
+                  </div>
+                  <div className="member-total">
+                    <small>মোট বোনাস</small>
+                    <strong>{money(bonus + commission)}</strong>
+                  </div>
+                </div>
+                <div className="member-income">
+                  <div>
+                    <p>
+                      ডিপোজিট: <strong>{money(member.deposit)}</strong>
+                    </p>
+                    <b>
+                      বোনাস ({bengaliNumber(teamRates[level])}%): {money(bonus)}
+                    </b>
+                  </div>
+                  <div>
+                    <p>
+                      দৈনিক প্রফিট: <strong>{money(member.profit)}</strong>
+                    </p>
+                    <b>
+                      কমিশন ({bengaliNumber(teamRates[level])}%):{" "}
+                      {money(commission)}
+                    </b>
+                  </div>
+                </div>
+              </article>
+            )
+          })}
+        </div>
+      </section>
+
+      <section className="commission-rules">
+        <h2>
+          <Icon name="gift" size={17} /> কমিশন যেভাবে হিসাব করা হয়:
+        </h2>
+        {[
+          ["wallet", "ডিপোজিট বোনাস (সদস্যের প্রতিটি ডিপোজিটে)", "বোনাস"],
+          ["chart", "দৈনিক প্রফিট কমিশন (সদস্যের প্রতিদিনের লাভে)", "কমিশন"],
+        ].map(([icon, title, label]) => (
+          <div className="rule-group" key={title}>
+            <h3>
+              <Icon name={icon} size={14} /> {title}
+            </h3>
+            <div>
+              {([1, 2, 3] as const).map((item) => (
+                <article key={item}>
+                  <strong>
+                    {bengaliNumber(teamRates[item])}% {label}
+                  </strong>
+                  <small>{bengaliNumber(item)}ম লেভেল</small>
+                </article>
+              ))}
+            </div>
+          </div>
+        ))}
+      </section>
+    </main>
+  )
+}
+
 function PlaceholderPage({ page }: { page: Page }) {
   const current = navItems.find((item) => item.id === page)!
   return (
@@ -439,7 +834,7 @@ export default function App() {
   }
 
   return (
-    <div className={`app ${page === "work" ? "blue-header" : ""}`}>
+    <div className="app blue-header">
       <AppHeader onNotice={() => showToast("কোনো নতুন নোটিফিকেশন নেই")} />
       {page === "home" && <HomePage action={showToast} />}
       {page === "work" && (
@@ -455,7 +850,10 @@ export default function App() {
           }}
         />
       )}
-      {!["home", "work"].includes(page) && <PlaceholderPage page={page} />}
+      {page === "team" && <TeamPage action={showToast} />}
+      {!["home", "work", "team"].includes(page) && (
+        <PlaceholderPage page={page} />
+      )}
       {toast && (
         <div className="toast" role="status">
           {toast}
