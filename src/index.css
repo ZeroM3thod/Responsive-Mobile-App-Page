@@ -1,12 +1,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'FN Mahin Rafid';
+  font-style: normal;
+  font-weight: 300 500;
+  font-display: swap;
+  size-adjust: 115%;
+  src: url('/fonts/FN-Mahin-Rafid-Book-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'FN Mahin Rafid';
+  font-style: italic;
+  font-weight: 300 500;
+  font-display: swap;
+  size-adjust: 115%;
+  src: url('/fonts/FN-Mahin-Rafid-Book-Italic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'FN Mahin Rafid';
+  font-style: normal;
+  font-weight: 600 800;
+  font-display: swap;
+  size-adjust: 115%;
+  src: url('/fonts/FN-Mahin-Rafid-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'FN Mahin Rafid';
+  font-style: italic;
+  font-weight: 600 800;
+  font-display: swap;
+  size-adjust: 115%;
+  src: url('/fonts/FN-Mahin-Rafid-Italic.ttf') format('truetype');
+}
+
+@theme {
+  --font-sans: 'FN Mahin Rafid', 'Noto Sans Bengali', system-ui, sans-serif;
+}
+
 :root {
-  font-family: 'Noto Sans Bengali', system-ui, sans-serif;
+  font-family: 'FN Mahin Rafid', 'Noto Sans Bengali', system-ui, sans-serif;
   color: #05295f;
   background: #eefaff;
   font-synthesis: none;
+  line-height: 1.45;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 * {
@@ -27,6 +69,7 @@ body {
 
 button {
   cursor: pointer;
+  line-height: 1.35;
 }
 
 strong,
@@ -49,12 +92,15 @@ button:active {
 }
 
 .app-header {
-  position: relative;
+  position: sticky;
+  z-index: 30;
+  top: 0;
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-height: 116px;
-  padding: 18px 20px;
+  gap: 10px;
+  min-height: 88px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 14px rgba(0, 85, 160, .12);
 }
 
 .blue-header .app-header {
@@ -74,13 +120,18 @@ button:active {
 .avatar {
   display: grid;
   place-items: center;
-  flex: 0 0 64px;
-  height: 68px;
+  flex: 0 0 50px;
+  height: 54px;
   border: 1px solid rgba(255,255,255,.6);
-  border-radius: 14px;
+  border-radius: 12px;
   color: #d9f2ff;
   background: linear-gradient(#72d9fb, #088ee9);
   box-shadow: inset 0 1px 8px rgba(255,255,255,.45);
+}
+
+.avatar svg {
+  width: 34px;
+  height: 34px;
 }
 
 .identity {
@@ -88,19 +139,20 @@ button:active {
   min-width: 0;
   flex: 1;
   flex-direction: column;
-  line-height: 1.12;
+  line-height: 1.22;
 }
 
 .identity strong {
-  font-size: clamp(20px, 5.7vw, 24px);
+  font-size: clamp(17px, 4.8vw, 20px);
   font-weight: 700;
 }
 
 .identity > span {
   overflow: hidden;
   max-width: 100%;
-  font-size: clamp(12px, 3.6vw, 15px);
+  font-size: clamp(10px, 3.1vw, 13px);
   font-weight: 500;
+  line-height: 1.3;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -128,7 +180,7 @@ button:active {
   place-items: center;
   margin-left: auto;
   flex: 0 0 auto;
-  padding: 10px 4px;
+  padding: 8px 3px;
   color: #048ce1;
   background: transparent;
   border: 0;
@@ -149,8 +201,13 @@ button:active {
   background: #ff2b63;
 }
 
+.notice-button svg {
+  width: 26px;
+  height: 26px;
+}
+
 .page-content {
-  padding: 0 14px 18px;
+  padding: 10px 14px 18px;
 }
 
 .balance-card {
@@ -409,7 +466,6 @@ button:active {
 
 .product-banner strong {
   display: block;
-  font-family: Arial, sans-serif;
   font-size: clamp(16px, 4.8vw, 21px);
   font-weight: 600;
   line-height: 1.15;
@@ -425,7 +481,6 @@ button:active {
   position: absolute;
   right: 13px;
   bottom: 10px;
-  font-family: Georgia, serif;
   font-size: 12px;
   font-weight: 700;
   text-align: center;
@@ -598,7 +653,6 @@ button:active {
   color: white;
   background: linear-gradient(#08a9f5, #076de0);
   box-shadow: 0 5px 12px rgba(0,118,224,.22);
-  font-family: Arial, sans-serif;
   font-size: 17px;
   font-weight: 600;
 }
@@ -681,13 +735,572 @@ button:active {
   text-align: center;
 }
 
+.earn-page {
+  display: grid;
+  gap: 14px;
+  padding-bottom: 28px;
+  color: #102a43;
+  background: #f4faff;
+}
+
+.earn-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 50px minmax(0, 1fr);
+  gap: 12px;
+  padding: 18px;
+  overflow: hidden;
+  border-radius: 16px;
+  color: white;
+  background: linear-gradient(135deg, #0758c9, #079add);
+  box-shadow: 0 10px 24px rgba(0, 104, 196, .18);
+}
+
+.earn-hero::after {
+  position: absolute;
+  top: -52px;
+  right: -45px;
+  width: 150px;
+  height: 150px;
+  border: 22px solid rgba(255,255,255,.09);
+  border-radius: 50%;
+  content: '';
+}
+
+.earn-hero-icon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 14px;
+  background: rgba(255,255,255,.15);
+}
+
+.earn-hero > div:nth-child(2) {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.earn-kicker {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  color: #dff6ff;
+  background: rgba(255,255,255,.14);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.earn-hero h1 {
+  margin-top: 4px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.earn-hero p {
+  margin-top: 3px;
+  color: #e5f5ff;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.earn-overview {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 2px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,.22);
+}
+
+.earn-overview > div {
+  min-width: 0;
+  padding: 0 10px;
+  border-right: 1px solid rgba(255,255,255,.2);
+  text-align: center;
+}
+
+.earn-overview > div:last-child {
+  border-right: 0;
+}
+
+.earn-overview small,
+.earn-overview strong {
+  display: block;
+}
+
+.earn-overview small {
+  color: #d9efff;
+  font-size: 10px;
+}
+
+.earn-overview strong {
+  margin-top: 2px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.package-section {
+  padding: 14px;
+  border: 1px solid #e2eef8;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 7px 20px rgba(12, 91, 145, .07);
+}
+
+.package-heading,
+.package-heading > div {
+  display: flex;
+  align-items: center;
+}
+
+.package-heading {
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.package-heading > div {
+  min-width: 0;
+  gap: 9px;
+}
+
+.package-heading > div > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  height: 36px;
+  border-radius: 11px;
+  color: #0879db;
+  background: #eaf5ff;
+}
+
+.package-heading h2 {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.package-heading p {
+  margin-top: 1px;
+  color: #61758a;
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.package-heading > b {
+  flex: 0 0 auto;
+  padding: 3px 9px;
+  border-radius: 999px;
+  color: #0870c8;
+  background: #eef8ff;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.package-list {
+  display: grid;
+  gap: 10px;
+}
+
+.vip-package {
+  position: relative;
+  display: flex;
+  gap: 11px;
+  padding: 12px;
+  overflow: hidden;
+  border: 1px solid #dcebf7;
+  border-radius: 14px;
+  background: linear-gradient(140deg, #fff, #f7fbff);
+}
+
+.vip-package::after {
+  position: absolute;
+  right: -22px;
+  bottom: -30px;
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  content: '';
+  background: rgba(7, 137, 221, .05);
+}
+
+.package-number {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  flex: 0 0 38px;
+  height: 38px;
+  border-radius: 12px;
+  color: white;
+  background: linear-gradient(145deg, #0869cf, #08a8df);
+  box-shadow: 0 5px 12px rgba(0, 112, 201, .18);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.package-main {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 9px 10px;
+}
+
+.package-name span,
+.package-name small,
+.package-range small,
+.package-range strong,
+.package-profit small,
+.package-profit strong {
+  display: block;
+}
+
+.package-name span {
+  color: #075fb4;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.package-name small,
+.package-range small,
+.package-profit small {
+  color: #6b7f92;
+  font-size: 9px;
+}
+
+.package-range {
+  text-align: right;
+}
+
+.package-range strong {
+  margin-top: 1px;
+  color: #102a43;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.package-profit {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 7px 9px;
+  border-radius: 10px;
+  background: #eef8ff;
+}
+
+.package-profit > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 28px;
+  height: 28px;
+  border-radius: 9px;
+  color: #0876d1;
+  background: white;
+}
+
+.package-profit strong {
+  color: #075fb4;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.vip-package button {
+  align-self: stretch;
+  padding: 7px 11px;
+  border: 0;
+  border-radius: 10px;
+  color: white;
+  background: #0879d9;
+  box-shadow: 0 4px 10px rgba(0, 102, 190, .14);
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.earn-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 13px 14px;
+  border: 1px solid #cfe7f8;
+  border-radius: 14px;
+  color: #173b59;
+  background: #edf8ff;
+}
+
+.earn-note > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 32px;
+  height: 32px;
+  border-radius: 10px;
+  color: #0877d1;
+  background: white;
+}
+
+.earn-note h2 {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.earn-note p {
+  margin-top: 2px;
+  color: #536d82;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.purchase-modal-backdrop {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(4, 25, 48, .64);
+  backdrop-filter: blur(5px);
+}
+
+.purchase-modal {
+  width: min(100%, 430px);
+  max-height: calc(100dvh - 36px);
+  padding: 16px;
+  overflow-y: auto;
+  border: 1px solid #d9eaf6;
+  border-radius: 20px;
+  color: #102a43;
+  background: white;
+  box-shadow: 0 24px 60px rgba(0, 37, 79, .3);
+  animation: purchase-modal-in .2s ease-out;
+}
+
+.purchase-modal-head,
+.purchase-modal-head > div,
+.purchase-balance > div,
+.purchase-balance > div:first-child {
+  display: flex;
+  align-items: center;
+}
+
+.purchase-modal-head {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.purchase-modal-head > div {
+  min-width: 0;
+  gap: 10px;
+}
+
+.purchase-modal-head > div > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: white;
+  background: linear-gradient(145deg, #0764c8, #08a5df);
+}
+
+.purchase-modal-head small {
+  display: block;
+  color: #6b7f92;
+  font-size: 10px;
+}
+
+.purchase-modal-head h2 {
+  margin-top: 1px;
+  color: #0b5da7;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.purchase-modal-head > button {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 11px;
+  color: #536d82;
+  background: #eef4f8;
+}
+
+.purchase-package-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.purchase-package-summary > div {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #dbeaf5;
+  border-radius: 12px;
+  background: #f7fbff;
+}
+
+.purchase-package-summary small,
+.purchase-package-summary strong {
+  display: block;
+}
+
+.purchase-package-summary small {
+  color: #6b7f92;
+  font-size: 9px;
+}
+
+.purchase-package-summary strong {
+  margin-top: 2px;
+  color: #102a43;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.purchase-balance {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  color: white;
+  background: linear-gradient(135deg, #075fc1, #078fd7);
+}
+
+.purchase-balance > div {
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.purchase-balance > div:first-child {
+  justify-content: flex-start;
+}
+
+.purchase-balance > div:first-child > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.15);
+}
+
+.purchase-balance small,
+.purchase-balance strong {
+  display: block;
+}
+
+.purchase-balance small {
+  color: #d8efff;
+  font-size: 10px;
+}
+
+.purchase-balance strong {
+  margin-top: 1px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.purchase-balance > div:last-child {
+  padding-top: 9px;
+  border-top: 1px solid rgba(255,255,255,.2);
+}
+
+.purchase-balance > div:last-child strong {
+  font-size: 12px;
+}
+
+.balance-warning {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  color: #b42318;
+  background: #fff1f2;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.purchase-rules {
+  margin-top: 12px;
+}
+
+.purchase-rules h3 {
+  color: #102a43;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.purchase-rules ol {
+  display: grid;
+  gap: 6px;
+  margin-top: 7px;
+  padding-left: 24px;
+  color: #526b7e;
+  font-size: 10px;
+  line-height: 1.5;
+  list-style: bengali;
+}
+
+.purchase-rules li {
+  padding-left: 2px;
+}
+
+.purchase-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.purchase-actions button {
+  min-height: 40px;
+  border: 0;
+  border-radius: 11px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.purchase-actions .cancel {
+  color: #39566e;
+  background: #edf3f7;
+}
+
+.purchase-actions .confirm {
+  color: white;
+  background: linear-gradient(135deg, #0866c8, #078fd7);
+  box-shadow: 0 5px 14px rgba(0, 100, 190, .2);
+}
+
+@keyframes purchase-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(.98);
+  }
+}
+
 .team-page {
   display: grid;
   gap: 16px;
-  padding-top: 0;
+  padding-top: 10px;
   padding-bottom: 28px;
   color: #1e293b;
-  font-family: 'Hind Siliguri', sans-serif;
+  font-family: inherit;
   background: #f2f8ff;
 }
 
@@ -812,11 +1425,11 @@ button:active {
 }
 
 .team-summary-grid strong.amber {
-  color: #fde68a;
+  color: white;
 }
 
 .team-summary-grid strong.green {
-  color: #a7f3d0;
+  color: white;
 }
 
 .team-card {
@@ -930,7 +1543,7 @@ button:active {
   align-items: center;
   gap: 8px;
   padding: 0 4px;
-  color: #1e293b;
+  color: #111827;
   font-size: 14px;
   font-weight: 700;
 }
@@ -960,7 +1573,7 @@ button:active {
   padding: 7px 3px;
   border: 0;
   border-radius: 12px;
-  color: #475569;
+  color: #111827;
   background: transparent;
   font-size: 12px;
   font-weight: 600;
@@ -974,9 +1587,9 @@ button:active {
 }
 
 .level-tabs button.active {
-  color: white;
-  background: #0072ff;
-  box-shadow: 0 4px 12px rgba(0, 114, 255, .25);
+  color: #111827;
+  background: #dbeafe;
+  box-shadow: 0 3px 10px rgba(0, 114, 255, .14);
 }
 
 .level-stats {
@@ -1005,26 +1618,26 @@ button:active {
 }
 
 .level-stats-head small {
-  color: #94a3b8;
+  color: #111827;
   font-size: 11px;
   line-height: 1.3;
 }
 
 .level-stats-head strong {
   margin-top: 2px;
-  color: #1e293b;
+  color: #111827;
   font-size: 12px;
   font-weight: 700;
   line-height: 1.35;
 }
 
 .level-stats-head em {
-  color: #059669;
+  color: #111827;
   font-style: normal;
 }
 
 .level-stats-head > div:last-child strong {
-  color: #0072ff;
+  color: #111827;
   font-size: 14px;
   white-space: nowrap;
 }
@@ -1043,11 +1656,11 @@ button:active {
   min-width: 0;
   padding: 8px 4px;
   border-radius: 12px;
-  background: #ecfdf5;
+  background: #f1f5f9;
 }
 
 .level-income > div:last-child {
-  background: #fffbeb;
+  background: #eaf3ff;
 }
 
 .level-income small,
@@ -1059,28 +1672,28 @@ button:active {
 }
 
 .level-income small {
-  color: #64748b;
+  color: #111827;
   font-size: 10px;
 }
 
 .level-income small svg {
-  color: #059669;
+  color: #111827;
 }
 
 .level-income > div:last-child small svg {
-  color: #d97706;
+  color: #111827;
 }
 
 .level-income strong {
   margin-top: 2px;
-  color: #059669;
+  color: #111827;
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
 }
 
 .level-income > div:last-child strong {
-  color: #d97706;
+  color: #111827;
 }
 
 .member-list {
@@ -1105,13 +1718,13 @@ button:active {
   flex: 0 0 40px;
   height: 40px;
   border-radius: 12px;
-  color: #94a3b8;
+  color: #111827;
   background: #f1f5f9;
 }
 
 .member-icon.active {
-  color: #059669;
-  background: #ecfdf5;
+  color: #111827;
+  background: #eaf3ff;
 }
 
 .member-identity {
@@ -1126,7 +1739,7 @@ button:active {
 }
 
 .member-identity strong {
-  color: #1e293b;
+  color: #111827;
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
@@ -1134,14 +1747,14 @@ button:active {
 
 .member-identity p {
   margin-top: 2px;
-  color: #94a3b8;
+  color: #111827;
   font-size: 10px;
 }
 
 .status {
   padding: 1px 8px;
   border-radius: 999px;
-  color: #64748b;
+  color: #111827;
   background: #f1f5f9;
   font-size: 9px;
   font-weight: 600;
@@ -1149,8 +1762,8 @@ button:active {
 }
 
 .status.active {
-  color: #047857;
-  background: #d1fae5;
+  color: #111827;
+  background: #dbeafe;
 }
 
 .member-total {
@@ -1164,13 +1777,13 @@ button:active {
 }
 
 .member-total small {
-  color: #94a3b8;
+  color: #111827;
   font-size: 10px;
 }
 
 .member-total strong {
   margin-top: 2px;
-  color: #059669;
+  color: #111827;
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
@@ -1189,11 +1802,11 @@ button:active {
   min-width: 0;
   padding: 7px 9px;
   border-radius: 12px;
-  background: rgba(236, 253, 245, .75);
+  background: #f1f5f9;
 }
 
 .member-income > div:last-child {
-  background: rgba(255, 251, 235, .8);
+  background: #eaf3ff;
 }
 
 .member-income p,
@@ -1204,23 +1817,23 @@ button:active {
 }
 
 .member-income p {
-  color: #94a3b8;
+  color: #111827;
 }
 
 .member-income p strong {
-  color: #334155;
+  color: #111827;
   font-weight: 700;
   white-space: nowrap;
 }
 
 .member-income b {
   margin-top: 2px;
-  color: #059669;
+  color: #111827;
   font-weight: 700;
 }
 
 .member-income > div:last-child b {
-  color: #d97706;
+  color: #111827;
 }
 
 .commission-rules {
@@ -1252,11 +1865,11 @@ button:active {
 }
 
 .rule-group:first-of-type h3 svg {
-  color: #059669;
+  color: #0072ff;
 }
 
 .rule-group:last-of-type h3 svg {
-  color: #d97706;
+  color: #0072ff;
 }
 
 .rule-group > div {
@@ -1329,14 +1942,14 @@ button:active {
   padding: 0 2px;
   font-size: clamp(8px, 2.6vw, 11px);
   font-weight: 500;
-  line-height: 1.2;
+  line-height: 1.35;
   overflow-wrap: anywhere;
   text-align: center;
 }
 
 .toast {
   position: fixed;
-  z-index: 50;
+  z-index: 150;
   bottom: 91px;
   left: 50%;
   width: max-content;
@@ -1382,14 +1995,14 @@ button:active {
 
 @media (max-width: 600px) {
   .app-header {
-    min-height: 110px;
-    padding: 16px 14px;
+    min-height: 82px;
+    padding: 10px 12px;
   }
   .avatar {
-    flex-basis: 56px;
-    height: 60px;
+    flex-basis: 46px;
+    height: 50px;
   }
-  .identity strong { font-size: clamp(19px, 5.5vw, 22px); }
+  .identity strong { font-size: clamp(16px, 4.7vw, 19px); }
   .stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     padding: 6px;
@@ -1460,9 +2073,9 @@ button:active {
 
 @media (min-width: 391px) and (max-width: 430px) {
   .app-header {
-    min-height: 110px;
-    padding-top: 16px;
-    padding-bottom: 16px;
+    min-height: 82px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 
   .page-content {
@@ -1534,10 +2147,19 @@ button:active {
     padding-inline: 10px;
   }
   .avatar {
-    flex-basis: 48px;
-    height: 53px;
+    flex-basis: 43px;
+    height: 47px;
   }
   .notice-button { padding-inline: 0; }
+  .vip-package {
+    gap: 8px;
+    padding: 10px;
+  }
+  .package-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .package-range { text-align: left; }
+  .vip-package button { min-height: 36px; }
   .quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .quick-grid button { min-height: 98px; }
   .product-banner > div:nth-child(2) { padding-right: 0; }
@@ -1557,5 +2179,13 @@ button:active {
   .app-header {
     padding-right: 5vw;
     padding-left: 5vw;
+  }
+
+  .package-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .vip-package:last-child {
+    grid-column: 1 / -1;
   }
 }

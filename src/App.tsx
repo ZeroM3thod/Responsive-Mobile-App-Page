@@ -103,6 +103,12 @@ function Icon({
         <path d="m8 12 2.5 2.5L16 9" />
       </>
     ),
+    close: (
+      <>
+        <path d="m6 6 12 12" />
+        <path d="m18 6-12 12" />
+      </>
+    ),
     clock: (
       <>
         <circle cx="12" cy="12" r="9" />
@@ -192,7 +198,7 @@ const navItems: { id: Page icon: string label: string }[] = [
   { id: "work", icon: "work", label: "কর্মক্ষেত্র" },
   { id: "earn", icon: "chart", label: "অর্জনের পথ" },
   { id: "team", icon: "handshake", label: "সাফল্যের সঙ্গী" },
-  { id: "profile", icon: "user", label: "আমার পরিবার" },
+  { id: "profile", icon: "user", label: "আমার পরিসর" },
 ]
 
 function BottomNav({
@@ -425,6 +431,248 @@ function WorkPage({
       </section>
       <p className="work-slogan">—　◆　ছোট ছোট কাজ　→　বড় আয়　◆　—</p>
     </main>
+  )
+}
+
+const vipPackages = [
+  {
+    name: "ভিআইপি ১",
+    investment: "৳ ১,০০০ – ৳ ৪,৯৯৯",
+    profit: "১% – ১.২%",
+    minimum: 1000,
+  },
+  {
+    name: "ভিআইপি ২",
+    investment: "৳ ৫,০০০ – ৳ ৯,৯৯৯",
+    profit: "১.২% – ১.৪%",
+    minimum: 5000,
+  },
+  {
+    name: "ভিআইপি ৩",
+    investment: "৳ ১০,০০০ – ৳ ১৯,৯৯৯",
+    profit: "১.৪% – ১.৬%",
+    minimum: 10000,
+  },
+  {
+    name: "ভিআইপি ৪",
+    investment: "৳ ২০,০০০ – ৳ ৩৪,৯৯৯",
+    profit: "১.৬% – ১.৮%",
+    minimum: 20000,
+  },
+  {
+    name: "ভিআইপি ৫",
+    investment: "৳ ৩৫,০০০ – ৳ ৪৯,৯৯৯",
+    profit: "১.৮% – ২%",
+    minimum: 35000,
+  },
+]
+
+function EarnPage({ action }: { action: (message: string) => void }) {
+  const [selectedPackage, setSelectedPackage] = useState<
+    (typeof vipPackages)[number] | null
+  >(null)
+  const availableBalance = 102.03
+  const hasEnoughBalance = selectedPackage
+    ? availableBalance >= selectedPackage.minimum
+    : false
+
+  const confirmPurchase = () => {
+    if (!selectedPackage) return
+    if (!hasEnoughBalance) {
+      action("প্যাকেজ কেনার জন্য আপনার ব্যালেন্স পর্যাপ্ত নয়")
+      return
+    }
+
+    action(`${selectedPackage.name} প্যাকেজ সফলভাবে কেনা হয়েছে`)
+    setSelectedPackage(null)
+  }
+
+  return (
+    <>
+      <main className="earn-page page-content">
+        <section className="earn-hero">
+          <div className="earn-hero-icon">
+            <Icon name="chart" size={38} />
+          </div>
+          <div>
+            <span className="earn-kicker">বিনিয়োগ পরিকল্পনা</span>
+            <h1>আপনার অর্জনের পথ</h1>
+            <p>
+              নিজের সামর্থ্য অনুযায়ী একটি ভিআইপি প্যাকেজ বেছে নিয়ে প্রতিদিনের
+              সম্ভাব্য লাভের পথে এগিয়ে যান।
+            </p>
+          </div>
+          <div className="earn-overview">
+            <div>
+              <small>মোট প্যাকেজ</small>
+              <strong>৫টি</strong>
+            </div>
+            <div>
+              <small>দৈনিক সম্ভাব্য লাভ</small>
+              <strong>১% – ২%</strong>
+            </div>
+          </div>
+        </section>
+
+        <section className="package-section">
+          <div className="package-heading">
+            <div>
+              <span>
+                <Icon name="wallet" size={21} />
+              </span>
+              <div>
+                <h2>ভিআইপি প্যাকেজসমূহ</h2>
+                <p>বিনিয়োগের সীমা ও দৈনিক লাভ দেখে প্যাকেজ নির্বাচন করুন</p>
+              </div>
+            </div>
+            <b>৫টি স্তর</b>
+          </div>
+
+          <div className="package-list" aria-label="ভিআইপি প্যাকেজের তালিকা">
+            {vipPackages.map((item, index) => (
+              <article className="vip-package" key={item.name}>
+                <div className="package-number">{bengaliNumber(index + 1)}</div>
+                <div className="package-main">
+                  <div className="package-name">
+                    <span>{item.name}</span>
+                    <small>বিনিয়োগ স্তর</small>
+                  </div>
+                  <div className="package-range">
+                    <small>বিনিয়োগ সীমা</small>
+                    <strong>{item.investment}</strong>
+                  </div>
+                  <div className="package-profit">
+                    <span>
+                      <Icon name="chart" size={17} />
+                    </span>
+                    <div>
+                      <small>প্রতিদিন সম্ভাব্য লাভ</small>
+                      <strong>{item.profit}</strong>
+                    </div>
+                  </div>
+                  <button onClick={() => setSelectedPackage(item)}>
+                    প্যাকেজ কিনুন
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="earn-note">
+          <span>
+            <Icon name="check" size={20} />
+          </span>
+          <div>
+            <h2>গুরুত্বপূর্ণ তথ্য</h2>
+            <p>
+              দৈনিক লাভের হার নির্বাচিত প্যাকেজ অনুযায়ী প্রযোজ্য হবে। বিনিয়োগের
+              আগে সংশ্লিষ্ট সব নিয়ম ও শর্ত ভালোভাবে যাচাই করুন।
+            </p>
+          </div>
+        </section>
+      </main>
+
+      {selectedPackage && (
+        <div
+          className="purchase-modal-backdrop"
+          onClick={() => setSelectedPackage(null)}
+        >
+          <section
+            aria-labelledby="purchase-modal-title"
+            aria-modal="true"
+            className="purchase-modal"
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+          >
+            <div className="purchase-modal-head">
+              <div>
+                <span>
+                  <Icon name="wallet" size={22} />
+                </span>
+                <div>
+                  <small>প্যাকেজ কেনার অনুমোদন</small>
+                  <h2 id="purchase-modal-title">{selectedPackage.name}</h2>
+                </div>
+              </div>
+              <button
+                aria-label="বন্ধ করুন"
+                onClick={() => setSelectedPackage(null)}
+              >
+                <Icon name="close" size={20} />
+              </button>
+            </div>
+
+            <div className="purchase-package-summary">
+              <div>
+                <small>বিনিয়োগ সীমা</small>
+                <strong>{selectedPackage.investment}</strong>
+              </div>
+              <div>
+                <small>দৈনিক সম্ভাব্য লাভ</small>
+                <strong>{selectedPackage.profit}</strong>
+              </div>
+            </div>
+
+            <div className="purchase-balance">
+              <div>
+                <span>
+                  <Icon name="wallet" size={21} />
+                </span>
+                <div>
+                  <small>আপনার সম্পূর্ণ ব্যালেন্স</small>
+                  <strong>{money(availableBalance)}</strong>
+                </div>
+              </div>
+              <div>
+                <small>প্রয়োজনীয় সর্বনিম্ন ব্যালেন্স</small>
+                <strong>{money(selectedPackage.minimum)}</strong>
+              </div>
+            </div>
+
+            {!hasEnoughBalance && (
+              <p className="balance-warning">
+                এই প্যাকেজ কেনার জন্য আপনার বর্তমান ব্যালেন্স পর্যাপ্ত নয়।
+              </p>
+            )}
+
+            <div className="purchase-rules">
+              <h3>প্যাকেজ কেনার নিয়ম</h3>
+              <ol>
+                <li>
+                  ক্রয় নিশ্চিত করলে প্যাকেজের সর্বনিম্ন মূল্য আপনার ব্যালেন্স
+                  থেকে কাটা হবে।
+                </li>
+                <li>
+                  পর্যাপ্ত ব্যালেন্স থাকলে নির্বাচিত প্যাকেজ সঙ্গে সঙ্গে সক্রিয়
+                  হবে।
+                </li>
+                <li>
+                  দৈনিক সম্ভাব্য লাভ নির্বাচিত প্যাকেজের নির্ধারিত হারের মধ্যে
+                  হিসাব করা হবে।
+                </li>
+                <li>
+                  নিশ্চিত করার আগে প্যাকেজের সীমা, লাভের হার এবং সব শর্ত যাচাই
+                  করুন।
+                </li>
+              </ol>
+            </div>
+
+            <div className="purchase-actions">
+              <button
+                className="cancel"
+                onClick={() => setSelectedPackage(null)}
+              >
+                বাতিল করুন
+              </button>
+              <button className="confirm" onClick={confirmPurchase}>
+                ক্রয় নিশ্চিত করুন
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
+    </>
   )
 }
 
@@ -836,7 +1084,7 @@ export default function App() {
   return (
     <div className="app blue-header">
       <AppHeader onNotice={() => showToast("কোনো নতুন নোটিফিকেশন নেই")} />
-      {page === "home" && <HomePage action={showToast} />}
+      {page === "home" && <main className="page-content" />}
       {page === "work" && (
         <WorkPage
           claimed={claimed}
@@ -850,8 +1098,10 @@ export default function App() {
           }}
         />
       )}
+      {page === "earn" && <EarnPage action={showToast} />}
       {page === "team" && <TeamPage action={showToast} />}
-      {!["home", "work", "team"].includes(page) && (
+      {page === "profile" && <HomePage action={showToast} />}
+      {!["home", "work", "earn", "team", "profile"].includes(page) && (
         <PlaceholderPage page={page} />
       )}
       {toast && (

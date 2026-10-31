@@ -1,6 +1,5 @@
 {
-  "title": "Responsive Mobile App",
-  "description": "A mobile-responsive app with clickable controls, designed for a smooth, focused experience on phones.",
+  "description": "Bootstraps and verifies initial project setup, preparing deployment and preview configurations so teams can confidently launch imported projects.",
   "robots": {
     "index": false
   },
